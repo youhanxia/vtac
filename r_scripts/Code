@@ -1,0 +1,90 @@
+```{r}
+library(xlsx)
+library(dplyr)
+key<-read.xlsx("FOE.xlsx", sheetName="New.Field.Of.Study")
+my_dd<-read.csv("Clean_data.csv")
+
+
+###To get the Field.Of.Study for each Course.Code_ Offer
+
+my_dd[["Course.Code"]] <- key[ match(my_dd[['Course.Code']], key[['VTAC.Course.Code']] ) , 'New.Field.Of.Study']
+my_dd[["Course.Code.1"]] <- key[ match(my_dd[['Course.Code.1']], key[['VTAC.Course.Code']] ) , 'New.Field.Of.Study']
+my_dd[["Course.Code.2"]] <- key[ match(my_dd[['Course.Code.2']], key[['VTAC.Course.Code']] ) , 'New.Field.Of.Study']
+my_dd[["Course.Code.3"]] <- key[ match(my_dd[['Course.Code.3']], key[['VTAC.Course.Code']] ) , 'New.Field.Of.Study']
+my_dd[["Course.Code.4"]] <- key[ match(my_dd[['Course.Code.4']], key[['VTAC.Course.Code']] ) , 'New.Field.Of.Study']
+my_dd[["Course.Code.5"]] <- key[ match(my_dd[['Course.Code.5']], key[['VTAC.Course.Code']] ) , 'New.Field.Of.Study']
+my_dd[["Course.Code.6"]] <- key[ match(my_dd[['Course.Code.6']], key[['VTAC.Course.Code']] ) , 'New.Field.Of.Study']
+my_dd[["Course.Code.7"]] <- key[ match(my_dd[['Course.Code.7']], key[['VTAC.Course.Code']] ) , 'New.Field.Of.Study']
+my_dd[["Course.Code.8"]] <- key[ match(my_dd[['Course.Code.8']], key[['VTAC.Course.Code']] ) , 'New.Field.Of.Study']
+
+
+###To get the Field.Of.Study for each preference after ATAR
+
+my_dd[["Undergraduate.preferences.as.at.the.time.of.main.round.worklist.1"]] <- key[ match(my_dd[['Undergraduate.preferences.as.at.the.time.of.main.round.worklist.1']], key[['VTAC.Course.Code']] ) , 'New.Field.Of.Study']
+my_dd[["Undergraduate.preferences.as.at.the.time.of.main.round.worklist.2"]] <- key[ match(my_dd[['Undergraduate.preferences.as.at.the.time.of.main.round.worklist.2']], key[['VTAC.Course.Code']] ) , 'New.Field.Of.Study']
+my_dd[["Undergraduate.preferences.as.at.the.time.of.main.round.worklist.3"]] <- key[ match(my_dd[['Undergraduate.preferences.as.at.the.time.of.main.round.worklist.3']], key[['VTAC.Course.Code']] ) , 'New.Field.Of.Study']
+my_dd[["Undergraduate.preferences.as.at.the.time.of.main.round.worklist.4"]] <- key[ match(my_dd[['Undergraduate.preferences.as.at.the.time.of.main.round.worklist.4']], key[['VTAC.Course.Code']] ) , 'New.Field.Of.Study']
+my_dd[["Undergraduate.preferences.as.at.the.time.of.main.round.worklist.5"]] <- key[ match(my_dd[['Undergraduate.preferences.as.at.the.time.of.main.round.worklist.5']], key[['VTAC.Course.Code']] ) , 'New.Field.Of.Study']
+my_dd[["Undergraduate.preferences.as.at.the.time.of.main.round.worklist.6"]] <- key[ match(my_dd[['Undergraduate.preferences.as.at.the.time.of.main.round.worklist.6']], key[['VTAC.Course.Code']] ) , 'New.Field.Of.Study']
+my_dd[["Undergraduate.preferences.as.at.the.time.of.main.round.worklist.7"]] <- key[ match(my_dd[['Undergraduate.preferences.as.at.the.time.of.main.round.worklist.7']], key[['VTAC.Course.Code']] ) , 'New.Field.Of.Study']
+my_dd[["Undergraduate.preferences.as.at.the.time.of.main.round.worklist.8"]] <- key[ match(my_dd[['Undergraduate.preferences.as.at.the.time.of.main.round.worklist.8']], key[['VTAC.Course.Code']] ) , 'New.Field.Of.Study']
+
+
+To.print.with.leadingzero.AfterATAR <-as.data.frame (dplyr::select(my_dd,Undergraduate.preferences.as.at.the.time.of.main.round.worklist.1,Undergraduate.preferences.as.at.the.time.of.main.round.worklist.2,Undergraduate.preferences.as.at.the.time.of.main.round.worklist.3,Undergraduate.preferences.as.at.the.time.of.main.round.worklist.4,Undergraduate.preferences.as.at.the.time.of.main.round.worklist.5,Undergraduate.preferences.as.at.the.time.of.main.round.worklist.6,Undergraduate.preferences.as.at.the.time.of.main.round.worklist.7,Undergraduate.preferences.as.at.the.time.of.main.round.worklist.8))
+N<- as.data.frame (To.print.with.leadingzero.AfterATAR)
+
+
+N[is.na(N)] <- 0
+
+##To extract the first 2 dig 
+Sel<-  as.data.frame(apply(N, 2, function(x){substr(x, 1, 2)}))
+
+
+Sel <- cbind(Sel, count = apply(Sel, 1, function(x)length(unique(x[!is.na(x)]))))
+
+write.csv(Sel, file="avg_of_FOS.csv", row.names=FALSE)
+mm<-mean(Sel$count)
+print(mm)
+
+head(Sel)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### to get the frequency of Field.Of.Study for each student
+After.ATAR.FoS <-as.data.frame (dplyr::select(my_dd,Undergraduate.preferences.as.at.the.time.of.main.round.worklist.1,Undergraduate.preferences.as.at.the.time.of.main.round.worklist.2,Undergraduate.preferences.as.at.the.time.of.main.round.worklist.3,Undergraduate.preferences.as.at.the.time.of.main.round.worklist.4,Undergraduate.preferences.as.at.the.time.of.main.round.worklist.5,Undergraduate.preferences.as.at.the.time.of.main.round.worklist.6,Undergraduate.preferences.as.at.the.time.of.main.round.worklist.7,Undergraduate.preferences.as.at.the.time.of.main.round.worklist.8))
+
+
+After.ATAR.FoS$frequency <-apply(After.ATAR.FoS,1,function(x) names(which.max(table(x))))
+
+### to get the Broad.Name of frequency of Field.Of.Study for each student
+
+After.ATAR.FoS[["Broad.Name"]] <- key[ match(After.ATAR.FoS[['frequency']], key[['New.Field.Of.Study']] ) , 'Broad.Name']
+
+
+
+###Most frequent  Field.Of.Study or Broad.Name
+tail(names(sort(table(After.ATAR.FoS$frequency))), 1) 
+
+
+write.csv(After.ATAR.FoS, file="SS.csv", row.names=FALSE)
+
+```
